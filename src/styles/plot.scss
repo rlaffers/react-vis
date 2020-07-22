@@ -24,6 +24,7 @@ $rv-xy-plot-tooltip-padding: 7px 10px;
 
 .rv-xy-plot__inner {
   display: block;
+  touch-action: none;
 }
 
 .rv-xy-plot__axis__line {

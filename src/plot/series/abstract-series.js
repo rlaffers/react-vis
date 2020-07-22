@@ -93,13 +93,15 @@ class AbstractSeries extends PureComponent {
   }
 
   onParentTouchMove(e) {
-    e.preventDefault();
+    // event.preventDefault() is ignored by Chrome 56+ and raises a console error
+    // e.preventDefault();
     this.onParentMouseMove(e);
   }
 
   onParentTouchStart(e) {
+    // event.preventDefault() is ignored by Chrome 56+ and raises a console error
     // prevent mouse event emulation
-    e.preventDefault();
+    // e.preventDefault();
   }
 
   /**
