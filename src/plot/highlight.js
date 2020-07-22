@@ -3,9 +3,28 @@ import AbstractSeries from './series/abstract-series';
 import {getAttributeScale} from 'utils/scales-utils';
 import PropTypes from 'prop-types';
 
+function isTouchEvent(evt) {
+  return (
+    evt.type === 'touchstart' ||
+    evt.type === 'touchend' ||
+    evt.type === 'touchmove'
+  );
+}
+
+function getTouchEventOffset(axis, evt) {
+  const touch = evt.touches.item(0);
+  if (!touch) {
+    return undefined;
+  }
+  return (
+    touch[`page${axis.toUpperCase()}`] -
+    touch.target.getBoundingClientRect()[axis.toLowerCase()]
+  );
+}
+
 function getLocs(evt) {
-  const xLoc = evt.type === 'touchstart' ? evt.pageX : evt.offsetX;
-  const yLoc = evt.type === 'touchstart' ? evt.pageY : evt.offsetY;
+  const xLoc = isTouchEvent(evt) ? getTouchEventOffset('x', evt) : evt.offsetX;
+  const yLoc = isTouchEvent(evt) ? getTouchEventOffset('y', evt) : evt.offsetY;
   return {xLoc, yLoc};
 }
 
@@ -255,11 +274,17 @@ class Highlight extends AbstractSeries {
           y="0"
           width={Math.max(touchWidth, 0)}
           height={Math.max(touchHeight, 0)}
+          style={{touchAction: 'none'}}
           onMouseDown={e => this.startBrushing(e)}
           onMouseMove={e => this.onBrush(e)}
           onMouseUp={e => this.stopBrushing(e)}
           onMouseLeave={e => this.stopBrushing(e)}
-          // preventDefault() so that mouse event emulation does not happen
+          onTouchStart={e => {
+            this.startBrushing(e);
+          }}
+          onTouchMove={e => {
+            this.onBrush(e);
+          }}
           onTouchEnd={e => {
             e.preventDefault();
             this.stopBrushing(e);
