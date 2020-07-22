@@ -565,7 +565,7 @@ class XYPlot extends React.Component {
           onMouseMove={this._mouseMoveHandler}
           onMouseLeave={this._mouseLeaveHandler}
           onMouseEnter={this._mouseEnterHandler}
-          onTouchStart={this._mouseDownHandler}
+          onTouchStart={this._touchStartHandler}
           onTouchMove={this._touchMoveHandler}
           onTouchEnd={this._touchEndHandler}
           onTouchCancel={this._touchCancelHandler}
