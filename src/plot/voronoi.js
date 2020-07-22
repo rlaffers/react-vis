@@ -52,7 +52,8 @@ function Voronoi(props) {
 
   // Create helper function to handle special logic for touch events
   const handleTouchEvent = handler => evt => {
-    evt.preventDefault();
+    // event.preventDefault() is ignored by Chrome 56+ and raises a console error
+    // evt.preventDefault();
     const index = getNodeIndex(evt);
     if (index > -1 && index < polygons.length) {
       const d = polygons[index];
@@ -63,7 +64,7 @@ function Voronoi(props) {
   return (
     <g
       className={`${className} rv-voronoi`}
-      style={style}
+      style={{...style, touchAction: 'none'}}
       // Because of the nature of how touch events, and more specifically touchmove
       // and how it differs from mouseover, we must manage touch events on the parent
       onTouchEnd={handleTouchEvent(onMouseUp)}
